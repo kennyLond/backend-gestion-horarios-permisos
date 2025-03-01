@@ -1,4 +1,5 @@
 import express from 'express';
+import routesPersonas  from '../routes/persona.routes';
 
 
 class Server {
@@ -9,6 +10,8 @@ class Server {
 
         this.app = express();
         this.port = process.env.PORT || '4000'
+        this.middlewares() //llamar siempre antes del routes
+        this.routes();
     }
 
     listen(){
@@ -16,6 +19,17 @@ class Server {
         console.log('Aplicacion corriendo por el puerto', this.port)
     })
 
+    }
+
+    middlewares(){
+        //parseo del body
+        this.app.use(express.json())
+
+
+    }
+
+    routes (){
+        this.app.use('/api/personas',routesPersonas)
     }
 
 
