@@ -5,12 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const persona_routes_1 = __importDefault(require("../routes/persona.routes"));
+const connection_1 = __importDefault(require("../db/connection"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '4000';
         this.middlewares(); //llamar siempre antes del routes
         this.routes();
+        this.conectarDB(); //conexion base de datos
     }
     listen() {
         this.app.listen(this.port, () => {
@@ -23,6 +25,14 @@ class Server {
     }
     routes() {
         this.app.use('/api/personas', persona_routes_1.default);
+    }
+    //esto es base de datos
+    conectarDB() {
+        connection_1.default.connect((err) => {
+            if (err)
+                throw err;
+            console.log('CONECTADO A BASE DE DATOS, BEIBEEEE');
+        });
     }
 }
 exports.default = Server;
