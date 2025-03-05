@@ -1,6 +1,7 @@
 import express from 'express';
 import routesPersonas  from '../routes/persona.routes';
 import connection from '../db/connection';
+import cors from 'cors';
 
 
 class Server {
@@ -10,7 +11,7 @@ class Server {
     constructor(){
 
         this.app = express();
-        this.port = process.env.PORT || '4000'
+        this.port = process.env.PORT || '3000'
         this.middlewares() //llamar siempre antes del routes
         this.routes();
         this.conectarDB(); //conexion base de datos
@@ -26,6 +27,11 @@ class Server {
     middlewares(){
         //parseo del body
         this.app.use(express.json())
+
+
+        //cors
+        this.app.use(cors())
+
 
 
     }
