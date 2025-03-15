@@ -6,3 +6,7 @@ dotenv.config();
 const server = new Server();
 
 server.listen();
+
+
+const nombre: string ='kennys';
+console.log(nombre)

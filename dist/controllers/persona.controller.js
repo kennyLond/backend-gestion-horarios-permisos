@@ -15,7 +15,7 @@ const getPersonas = (req, res) => {
 exports.getPersonas = getPersonas;
 const getPersona = (req, res) => {
     const { id } = req.params;
-    connection_1.default.query('SELECT FROM persona WHERE id = ?', id, (err, data) => {
+    connection_1.default.query('SELECT * FROM persona WHERE id = ?', id, (err, data) => {
         if (err)
             throw err;
         res.json(data[0]);

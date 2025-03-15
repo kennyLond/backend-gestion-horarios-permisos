@@ -1,8 +1,6 @@
 import mysql from 'mysql';
 import keys from '../routes/keys';
 
-const connection: mysql.Connection = mysql.createConnection(keys);
+const pool: mysql.Pool = mysql.createPool(keys);
 
-export default connection;
-
-//esto es base de datos
+export default pool;

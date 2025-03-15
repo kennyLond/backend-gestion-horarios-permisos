@@ -14,7 +14,7 @@ export const getPersonas = (req: Request, res: Response) => {
 export const getPersona = (req: Request, res: Response) => {
 
     const {id }=req.params;
-    connection.query('SELECT FROM persona WHERE id = ?', id, (err, data) => {
+    connection.query('SELECT * FROM persona WHERE id = ?', id, (err, data) => {
         if(err) throw err;
         res.json(data[0])
 
@@ -58,12 +58,5 @@ export const putPersona = (req: Request, res: Response) => {
         res.json({
             msg: "persona actualizada con exito"
         })
-
-    }
-    
-    
-    
-    )
-
-
-};
+    })
+}
