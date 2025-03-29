@@ -1,7 +1,8 @@
 import express from 'express';
 import routesPersonas from '../routes/persona.routes';
 import routesUser from '../routes/user.routes';
-import pool from '../db/connection'; // Cambié "connection" a "pool" para reflejar el uso de createPool()
+import routesPermisos from '../routes/permisos.routes'; // ✅ Importamos las rutas de permisos
+import pool from '../db/connection'; // ✅ Asegurar que el archivo de conexión a la BD es correcto
 import cors from 'cors';
 
 class Server {
@@ -9,29 +10,30 @@ class Server {
     private port: string;
 
     constructor() {
-        console.log('Iniciando servidor...');
+        console.log('🚀 Iniciando servidor...');
         this.app = express();
         this.port = process.env.PORT || '3000';
-        this.middlewares(); // Llamar siempre antes de las rutas
+        this.middlewares();
         this.routes();
-        this.conectarDB(); // Conexión a la base de datos
+        this.conectarDB();
     }
 
     listen() {
         this.app.listen(this.port, () => {
-            console.log(`Aplicación corriendo en el puerto ${this.port}`);
+            console.log(`✅ Aplicación corriendo en el puerto ${this.port}`);
         });
     }
 
     middlewares() {
-        this.app.use(express.json()); // Habilita la lectura de JSON en requests
-        this.app.use(express.urlencoded({ extended: true })); // ✅ Soporte para datos urlencoded
+        this.app.use(express.json()); // Habilita lectura de JSON en requests
+        this.app.use(express.urlencoded({ extended: true })); // Soporte para datos urlencoded
         this.app.use(cors()); // Habilita CORS
     }
 
     routes() {
         this.app.use('/api/personas', routesPersonas);
         this.app.use('/api/users', routesUser);
+        this.app.use('/api/permisos', routesPermisos); // ✅ Nueva ruta para permisos
     }
 
     conectarDB() {
@@ -41,7 +43,7 @@ class Server {
                 return;
             }
             console.log('✅ CONECTADO A BASE DE DATOS');
-            connection.release(); // Liberar la conexión
+            connection.release();
         });
     }
 }
