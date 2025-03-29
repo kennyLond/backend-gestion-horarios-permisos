@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const persona_routes_1 = __importDefault(require("../routes/persona.routes"));
 const user_routes_1 = __importDefault(require("../routes/user.routes"));
 const permisos_routes_1 = __importDefault(require("../routes/permisos.routes")); // ✅ Importamos las rutas de permisos
 const connection_1 = __importDefault(require("../db/connection")); // ✅ Asegurar que el archivo de conexión a la BD es correcto
-const cors_1 = __importDefault(require("cors"));
 class Server {
     constructor() {
         console.log('🚀 Iniciando servidor...');
