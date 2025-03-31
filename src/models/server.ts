@@ -1,9 +1,10 @@
-import express, { Application } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import helmet from 'helmet'; // Importamos helmet
 import routesPersonas from '../routes/persona.routes';
 import routesUser from '../routes/user.routes';
-import routesPermisos from '../routes/permisos.routes'; // ✅ Importamos las rutas de permisos
-import pool from '../db/connection'; // ✅ Asegurar que el archivo de conexión a la BD es correcto
+import routesPermiso from '../routes/permiso.routes'
+import pool from '../db/connection';
 
 class Server {
     private app: Application;
@@ -25,16 +26,21 @@ class Server {
     }
 
     private middlewares(): void {
-        this.app.use(express.json()); // Habilita lectura de JSON en requests
-        this.app.use(express.urlencoded({ extended: true })); // Soporte para datos urlencoded
-        this.app.use(cors()); // Habilita CORS
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(cors());
+        this.app.use(helmet()); // Agregamos helmet para seguridad
+        this.app.use(this.errorHandler); // Middleware de manejo de errores global
     }
 
     private routes(): void {
         this.app.use('/api/personas', routesPersonas);
         this.app.use('/api/users', routesUser);
-        this.app.use('/api/permisos', routesPermisos); // ✅ Nueva ruta para permisos
+        this.app.use('/api/permisos', routesPermiso);
+
+    
     }
+
 
     private conectarDB(): void {
         pool.getConnection((err, connection) => {
@@ -45,6 +51,11 @@ class Server {
             console.log('✅ CONECTADO A BASE DE DATOS');
             connection.release();
         });
+    }
+
+    private errorHandler(err: any, req: Request, res: Response, next: NextFunction): void {
+        console.error('Error no controlado:', err);
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 }
 
