@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import routesPersonas from '../routes/persona.routes';
 import routesUser from '../routes/user.routes';
-import { router as routesPermiso } from '../routes/permiso.routes'; // Modificación aquí
+import permisosRoutes from '../routes/permiso.routes'
 import pool from '../db/connection';
 
 class Server {
@@ -36,7 +36,7 @@ class Server {
     private routes(): void {
         this.app.use('/api/personas', routesPersonas);
         this.app.use('/api/users', routesUser);
-        this.app.use('/api/permisos', routesPermiso); // Modificación aquí
+        this.app.use('/api/permisos', permisosRoutes); // Usar la importación correcta
     }
 
     private conectarDB(): void {
