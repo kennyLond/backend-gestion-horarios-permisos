@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const helmet_1 = __importDefault(require("helmet")); // Importamos helmet
+const helmet_1 = __importDefault(require("helmet"));
 const persona_routes_1 = __importDefault(require("../routes/persona.routes"));
 const user_routes_1 = __importDefault(require("../routes/user.routes"));
-const permiso_routes_1 = __importDefault(require("../routes/permiso.routes"));
+const permiso_routes_1 = require("../routes/permiso.routes"); // Modificación aquí
 const connection_1 = __importDefault(require("../db/connection"));
 class Server {
     constructor() {
@@ -25,16 +25,16 @@ class Server {
         });
     }
     middlewares() {
-        this.app.use(express_1.default.json());
-        this.app.use(express_1.default.urlencoded({ extended: true }));
+        this.app.use(express_1.default.json({ limit: '10mb' }));
+        this.app.use(express_1.default.urlencoded({ extended: true, limit: '10mb' }));
         this.app.use((0, cors_1.default)());
-        this.app.use((0, helmet_1.default)()); // Agregamos helmet para seguridad
-        this.app.use(this.errorHandler); // Middleware de manejo de errores global
+        this.app.use((0, helmet_1.default)());
+        this.app.use(this.errorHandler);
     }
     routes() {
         this.app.use('/api/personas', persona_routes_1.default);
         this.app.use('/api/users', user_routes_1.default);
-        this.app.use('/api/permisos', permiso_routes_1.default);
+        this.app.use('/api/permisos', permiso_routes_1.router); // Modificación aquí
     }
     conectarDB() {
         connection_1.default.getConnection((err, connection) => {

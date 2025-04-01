@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { obtenerPermisosConPersona } from '../controllers/permisos.controller';
+import { obtenerPermisosConPersona, subirDocumento } from '../controllers/permisos.controller';
 
 const router = Router();
 
-// Ruta para obtener los permisos junto con el nombre y apellido de la persona
 router.get('/', obtenerPermisosConPersona);
+router.post('/subir-documento', subirDocumento);
 
-export default router;
-
+export { router };

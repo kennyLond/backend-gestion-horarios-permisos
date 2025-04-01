@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.router = void 0;
 const express_1 = require("express");
 const permisos_controller_1 = require("../controllers/permisos.controller");
 const router = (0, express_1.Router)();
-// Ruta para obtener los permisos junto con el nombre y apellido de la persona
+exports.router = router;
 router.get('/', permisos_controller_1.obtenerPermisosConPersona);
-exports.default = router;
+router.post('/subir-documento', permisos_controller_1.subirDocumento);

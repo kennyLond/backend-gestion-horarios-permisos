@@ -1,9 +1,9 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import helmet from 'helmet'; // Importamos helmet
+import helmet from 'helmet';
 import routesPersonas from '../routes/persona.routes';
 import routesUser from '../routes/user.routes';
-import routesPermiso from '../routes/permiso.routes'
+import { router as routesPermiso } from '../routes/permiso.routes'; // Modificación aquí
 import pool from '../db/connection';
 
 class Server {
@@ -26,21 +26,18 @@ class Server {
     }
 
     private middlewares(): void {
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express.json({ limit: '10mb' }));
+        this.app.use(express.urlencoded({ extended: true, limit: '10mb' }));
         this.app.use(cors());
-        this.app.use(helmet()); // Agregamos helmet para seguridad
-        this.app.use(this.errorHandler); // Middleware de manejo de errores global
+        this.app.use(helmet());
+        this.app.use(this.errorHandler);
     }
 
     private routes(): void {
         this.app.use('/api/personas', routesPersonas);
         this.app.use('/api/users', routesUser);
-        this.app.use('/api/permisos', routesPermiso);
-
-    
+        this.app.use('/api/permisos', routesPermiso); // Modificación aquí
     }
-
 
     private conectarDB(): void {
         pool.getConnection((err, connection) => {
