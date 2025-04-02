@@ -1,7 +1,7 @@
 import express from 'express';
 import {
   obtenerPermisosConPersona,
-  subirDocumento,
+  crearPermiso, // Importar la función crearPermiso
 } from '../controllers/permisos.controller';
 
 const router = express.Router();
@@ -9,7 +9,7 @@ const router = express.Router();
 // Ruta para obtener todos los permisos con información de la persona
 router.get('/', obtenerPermisosConPersona);
 
-// Ruta para crear un nuevo permiso (incluyendo la carga del documento)
-router.post('/', subirDocumento);
+// Ruta para crear un nuevo permiso (sin carga de documentos)
+router.post('/', crearPermiso); // Usar la función crearPermiso
 
 export default router;
