@@ -8,6 +8,6 @@ const permisos_controller_1 = require("../controllers/permisos.controller");
 const router = express_1.default.Router();
 // Ruta para obtener todos los permisos con información de la persona
 router.get('/', permisos_controller_1.obtenerPermisosConPersona);
-// Ruta para crear un nuevo permiso (incluyendo la carga del documento)
-router.post('/', permisos_controller_1.subirDocumento);
+// Ruta para crear un nuevo permiso (sin carga de documentos)
+router.post('/1', permisos_controller_1.crearPermiso); // Usar la función crearPermiso
 exports.default = router;

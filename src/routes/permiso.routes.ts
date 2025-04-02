@@ -10,6 +10,6 @@ const router = express.Router();
 router.get('/', obtenerPermisosConPersona);
 
 // Ruta para crear un nuevo permiso (sin carga de documentos)
-router.post('/', crearPermiso); // Usar la función crearPermiso
+router.post('/1', crearPermiso); // Usar la función crearPermiso
 
 export default router;
