@@ -1,6 +1,7 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import routesAsistencias from '../routes/asistencias.routes';
 import routesPersonas from '../routes/persona.routes';
 import routesUser from '../routes/user.routes';
 import permisosRoutes from '../routes/permiso.routes'
@@ -37,6 +38,7 @@ class Server {
         this.app.use('/api/personas', routesPersonas);
         this.app.use('/api/users', routesUser);
         this.app.use('/api/permisos', permisosRoutes); // Usar la importación correcta
+        this.app.use('/api/asistencias', routesAsistencias);
     }
 
     private conectarDB(): void {
