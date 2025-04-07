@@ -16,5 +16,5 @@ router.post('/', upload.single('documento'), permisos_controller_1.crearPermiso)
 // Descargar el documento PDF asociado al permiso
 router.get('/descargar/:filename', permisos_controller_1.descargarDocumento);
 // Actualizar el estado del permiso (APROBADO / DENEGADO)
-router.put('/estado/:id', permisos_controller_1.actualizarEstadoPermiso);
+router.put('/:id/estado', permisos_controller_1.actualizarEstadoPermiso);
 exports.default = router;

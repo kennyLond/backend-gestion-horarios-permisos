@@ -22,6 +22,6 @@ router.post('/', upload.single('documento'), crearPermiso);
 router.get('/descargar/:filename', descargarDocumento);
 
 // Actualizar el estado del permiso (APROBADO / DENEGADO)
-router.put('/estado/:id', actualizarEstadoPermiso);
+router.put('/:id/estado', actualizarEstadoPermiso);
 
 export default router;

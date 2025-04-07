@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.putPersona = exports.postPersona = exports.deletePersona = exports.getPersona = exports.getPersonas = void 0;
 const connection_1 = __importDefault(require("../db/connection"));
 const getPersonas = (req, res) => {
-    connection_1.default.query('SELECT * FROM persona', (err, data) => {
+    connection_1.default.query('SELECT id, nombre, apellido, correo, tipoDocumento, num_documento, fechaNacimiento FROM persona', (err, data) => {
         if (err)
             throw err;
         res.json(data);
@@ -15,7 +15,7 @@ const getPersonas = (req, res) => {
 exports.getPersonas = getPersonas;
 const getPersona = (req, res) => {
     const { id } = req.params;
-    connection_1.default.query('SELECT * FROM persona WHERE id = ?', id, (err, data) => {
+    connection_1.default.query('SELECT id, nombre, apellido, correo, tipoDocumento, num_documento, fechaNacimiento FROM persona WHERE id = ?', id, (err, data) => {
         if (err)
             throw err;
         res.json(data[0]);

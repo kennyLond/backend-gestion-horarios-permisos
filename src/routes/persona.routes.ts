@@ -1,18 +1,27 @@
 import { Router } from 'express';
-import multer from 'multer';
-import storage from '../utils/uploads';
 import {
-  crearPermiso,
-  obtenerPermisosConPersona,
-  descargarDocumento,
-  actualizarEstadoPermiso
-} from '../controllers/permisos.controller';
+  getPersonas,
+  getPersona,
+  deletePersona,
+  postPersona,
+  putPersona
+} from '../controllers/persona.controller';
 
 const router = Router();
-const upload = multer({ storage });
 
-router.get('/', obtenerPermisosConPersona);
-router.post('/', upload.single('documento'), crearPermiso);
-router.put('/estado/:id', actualizarEstadoPermiso);
+// Obtener todas las personas
+router.get('/', getPersonas);
+
+// Obtener una persona por ID
+router.get('/:id', getPersona);
+
+// Crear una nueva persona
+router.post('/', postPersona);
+
+// Actualizar una persona por ID
+router.put('/:id', putPersona);
+
+// Eliminar una persona por ID
+router.delete('/:id', deletePersona);
 
 export default router;
