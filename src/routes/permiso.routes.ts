@@ -1,15 +1,27 @@
 import express from 'express';
 import {
   obtenerPermisosConPersona,
-  crearPermiso, 
+  crearPermiso,
+  descargarDocumento,
+  actualizarEstadoPermiso
 } from '../controllers/permisos.controller';
+import multer from 'multer';
+import storage from '../utils/uploads';
+
+const upload = multer({ storage });
 
 const router = express.Router();
 
-// Ruta para obtener todos los permisos con información de la persona
+// Obtener todos los permisos con datos de persona
 router.get('/', obtenerPermisosConPersona);
 
-// Ruta correcta para crear un permiso
-router.post('/', crearPermiso);
+// Crear un nuevo permiso con archivo
+router.post('/', upload.single('documento'), crearPermiso);
+
+// Descargar el documento PDF asociado al permiso
+router.get('/descargar/:filename', descargarDocumento);
+
+// Actualizar el estado del permiso (APROBADO / DENEGADO)
+router.put('/estado/:id', actualizarEstadoPermiso);
 
 export default router;

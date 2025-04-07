@@ -18,7 +18,6 @@ const obtenerAsistencias = (req, res) => {
     FROM asistencias
     JOIN persona ON asistencias.persona_id = persona.id
   `;
-    // Obtener personaId de los parámetros de consulta
     const personaId = req.query.persona_id;
     if (personaId) {
         query += ` WHERE asistencias.persona_id = ${personaId}`;
@@ -40,26 +39,24 @@ const registrarEntrada = (req, res) => {
         res.status(400).json({ msg: '⚠️ El ID de la persona es obligatorio.' });
         return;
     }
-    const horaEntrada = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    // Verificar si ya tiene una entrada sin salida
-    connection_1.default.query('SELECT * FROM asistencias WHERE persona_id = ? AND hora_salida IS NULL', [persona_id], (err, results) => {
+    connection_1.default.query('SELECT * FROM asistencias WHERE persona_id = ? AND DATE(hora_entrada) = CURDATE()', [persona_id], (err, results) => {
         if (err) {
             console.error('❌ Error en la base de datos:', err);
             res.status(500).json({ msg: 'Error al verificar asistencia previa.' });
             return;
         }
         if (results.length > 0) {
-            res.status(409).json({ msg: '⚠️ Ya existe una asistencia sin salida registrada para esta persona.' });
+            res.status(409).json({ msg: '⚠️ Ya existe una entrada registrada para esta persona hoy.' });
             return;
         }
-        // Insertar nueva entrada
-        connection_1.default.query('INSERT INTO asistencias (persona_id, hora_entrada) VALUES (?, ?)', [persona_id, horaEntrada], (err) => {
+        // Usamos NOW() directamente
+        connection_1.default.query('INSERT INTO asistencias (persona_id, hora_entrada) VALUES (?, NOW())', [persona_id], (err) => {
             if (err) {
                 console.error('❌ Error al registrar entrada:', err);
                 res.status(500).json({ msg: 'Error al registrar la entrada.' });
                 return;
             }
-            res.status(201).json({ msg: '✅ Entrada registrada con éxito.', horaEntrada });
+            res.status(201).json({ msg: '✅ Entrada registrada con éxito.' });
         });
     });
 };
@@ -71,26 +68,24 @@ const registrarSalida = (req, res) => {
         res.status(400).json({ msg: '⚠️ El ID de la persona es obligatorio.' });
         return;
     }
-    const horaSalida = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    // Verificar si hay una entrada sin salida
-    connection_1.default.query('SELECT * FROM asistencias WHERE persona_id = ? AND hora_salida IS NULL', [persona_id], (err, results) => {
+    connection_1.default.query('SELECT * FROM asistencias WHERE persona_id = ? AND hora_salida IS NULL AND DATE(hora_entrada) = CURDATE()', [persona_id], (err, results) => {
         if (err) {
             console.error('❌ Error en la base de datos:', err);
             res.status(500).json({ msg: 'Error al verificar asistencia activa.' });
             return;
         }
         if (results.length === 0) {
-            res.status(404).json({ msg: '⚠️ No se encontró una asistencia activa para registrar salida.' });
+            res.status(404).json({ msg: '⚠️ No se encontró una asistencia activa para registrar salida hoy.' });
             return;
         }
-        // Registrar salida
-        connection_1.default.query('UPDATE asistencias SET hora_salida = ? WHERE persona_id = ? AND hora_salida IS NULL', [horaSalida, persona_id], (err, result) => {
+        // Usamos NOW() directamente
+        connection_1.default.query('UPDATE asistencias SET hora_salida = NOW() WHERE persona_id = ? AND hora_salida IS NULL AND DATE(hora_entrada) = CURDATE()', [persona_id], (err) => {
             if (err) {
                 console.error('❌ Error al registrar salida:', err);
                 res.status(500).json({ msg: 'Error al registrar la salida.' });
                 return;
             }
-            res.status(200).json({ msg: '✅ Salida registrada con éxito.', horaSalida });
+            res.status(200).json({ msg: '✅ Salida registrada con éxito.' });
         });
     });
 };

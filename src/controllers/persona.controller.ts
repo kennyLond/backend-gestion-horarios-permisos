@@ -31,7 +31,6 @@ export const deletePersona = (req: Request, res: Response) => {
             msg:'persona eliminada con exito'
         })
     })
-
 };
 
 export const postPersona = (req: Request, res: Response) => {

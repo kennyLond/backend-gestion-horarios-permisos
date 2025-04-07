@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
+const path_1 = __importDefault(require("path")); // 👈 Importar path para servir archivos estáticos
 const asistencias_routes_1 = __importDefault(require("../routes/asistencias.routes"));
 const persona_routes_1 = __importDefault(require("../routes/persona.routes"));
 const user_routes_1 = __importDefault(require("../routes/user.routes"));
@@ -30,12 +31,14 @@ class Server {
         this.app.use(express_1.default.urlencoded({ extended: true, limit: '10mb' }));
         this.app.use((0, cors_1.default)());
         this.app.use((0, helmet_1.default)());
+        // ✅ Servir archivos estáticos desde la carpeta "uploads"
+        this.app.use('/uploads', express_1.default.static(path_1.default.join(__dirname, '..', 'uploads')));
         this.app.use(this.errorHandler);
     }
     routes() {
         this.app.use('/api/personas', persona_routes_1.default);
         this.app.use('/api/users', user_routes_1.default);
-        this.app.use('/api/permisos', permiso_routes_1.default); // Usar la importación correcta
+        this.app.use('/api/permisos', permiso_routes_1.default);
         this.app.use('/api/asistencias', asistencias_routes_1.default);
     }
     conectarDB() {

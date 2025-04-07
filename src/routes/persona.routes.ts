@@ -1,13 +1,18 @@
-
-import  {Router} from 'express';
-import { deletePersona, getPersona, getPersonas, postPersona, putPersona} from '../controllers/persona.controller';
+import { Router } from 'express';
+import multer from 'multer';
+import storage from '../utils/uploads';
+import {
+  crearPermiso,
+  obtenerPermisosConPersona,
+  descargarDocumento,
+  actualizarEstadoPermiso
+} from '../controllers/permisos.controller';
 
 const router = Router();
+const upload = multer({ storage });
 
-router.get('/', getPersonas);
-router.get('/:id', getPersona);
-router.delete('/:id', deletePersona);
-router.post('/', postPersona);
-router.put('/:id', putPersona);
+router.get('/', obtenerPermisosConPersona);
+router.post('/', upload.single('documento'), crearPermiso);
+router.put('/estado/:id', actualizarEstadoPermiso);
 
 export default router;

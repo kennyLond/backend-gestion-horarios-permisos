@@ -15,7 +15,6 @@ export const obtenerAsistencias = (req: Request, res: Response): void => {
     JOIN persona ON asistencias.persona_id = persona.id
   `;
 
-  // Obtener personaId de los parámetros de consulta
   const personaId = req.query.persona_id;
 
   if (personaId) {
@@ -41,11 +40,8 @@ export const registrarEntrada = (req: Request, res: Response): void => {
     return;
   }
 
-  const horaEntrada = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-  // Verificar si ya tiene una entrada sin salida
   connection.query(
-    'SELECT * FROM asistencias WHERE persona_id = ? AND hora_salida IS NULL',
+    'SELECT * FROM asistencias WHERE persona_id = ? AND DATE(hora_entrada) = CURDATE()',
     [persona_id],
     (err, results) => {
       if (err) {
@@ -55,21 +51,21 @@ export const registrarEntrada = (req: Request, res: Response): void => {
       }
 
       if (results.length > 0) {
-        res.status(409).json({ msg: '⚠️ Ya existe una asistencia sin salida registrada para esta persona.' });
+        res.status(409).json({ msg: '⚠️ Ya existe una entrada registrada para esta persona hoy.' });
         return;
       }
 
-      // Insertar nueva entrada
+      // Usamos NOW() directamente
       connection.query(
-        'INSERT INTO asistencias (persona_id, hora_entrada) VALUES (?, ?)',
-        [persona_id, horaEntrada],
+        'INSERT INTO asistencias (persona_id, hora_entrada) VALUES (?, NOW())',
+        [persona_id],
         (err) => {
           if (err) {
             console.error('❌ Error al registrar entrada:', err);
             res.status(500).json({ msg: 'Error al registrar la entrada.' });
             return;
           }
-          res.status(201).json({ msg: '✅ Entrada registrada con éxito.', horaEntrada });
+          res.status(201).json({ msg: '✅ Entrada registrada con éxito.' });
         }
       );
     }
@@ -85,11 +81,8 @@ export const registrarSalida = (req: Request, res: Response): void => {
     return;
   }
 
-  const horaSalida = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-  // Verificar si hay una entrada sin salida
   connection.query(
-    'SELECT * FROM asistencias WHERE persona_id = ? AND hora_salida IS NULL',
+    'SELECT * FROM asistencias WHERE persona_id = ? AND hora_salida IS NULL AND DATE(hora_entrada) = CURDATE()',
     [persona_id],
     (err, results) => {
       if (err) {
@@ -99,22 +92,22 @@ export const registrarSalida = (req: Request, res: Response): void => {
       }
 
       if (results.length === 0) {
-        res.status(404).json({ msg: '⚠️ No se encontró una asistencia activa para registrar salida.' });
+        res.status(404).json({ msg: '⚠️ No se encontró una asistencia activa para registrar salida hoy.' });
         return;
       }
 
-      // Registrar salida
+      // Usamos NOW() directamente
       connection.query(
-        'UPDATE asistencias SET hora_salida = ? WHERE persona_id = ? AND hora_salida IS NULL',
-        [horaSalida, persona_id],
-        (err, result) => {
+        'UPDATE asistencias SET hora_salida = NOW() WHERE persona_id = ? AND hora_salida IS NULL AND DATE(hora_entrada) = CURDATE()',
+        [persona_id],
+        (err) => {
           if (err) {
             console.error('❌ Error al registrar salida:', err);
             res.status(500).json({ msg: 'Error al registrar la salida.' });
             return;
           }
 
-          res.status(200).json({ msg: '✅ Salida registrada con éxito.', horaSalida });
+          res.status(200).json({ msg: '✅ Salida registrada con éxito.' });
         }
       );
     }
