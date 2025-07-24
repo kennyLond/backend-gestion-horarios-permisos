@@ -1,7 +1,7 @@
 
 ## AUTOR  
 **Kenny Orlando Londoño Torrado** – Desarrollador Backend Jr.  
-[@kennyLond](https://github.com/kennyLond)  
+ 
 
 # API REST – Sistema de Asistencias y Permisos (Backend)
 
@@ -71,8 +71,8 @@ src/
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/kennyLond/backend-tempo.git
-cd backend-tempo
+git clone https://github.com/kennyLond/backend-sistema-horarios-permisos
+cd backend-sistema-horarios-permisos
 ```
 
 ### 2. Instalar dependencias
