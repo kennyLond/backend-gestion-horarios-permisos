@@ -156,16 +156,7 @@ npm run dev
 tsc
 ```
 
----
 
-## SEGURIDAD Y MEJORAS FUTURAS
-
-- Implementación de autenticación con JWT.
-- Pruebas automatizadas con Jest o Supertest.
-- Manejo de carpetas `uploads/` con validaciones de tipo de archivo.
-- Despliegue en servicios como Vercel o Render.
-
----
 
 ## LICENCIA
 
