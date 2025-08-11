@@ -62,7 +62,6 @@ src/
 - NPM ≥ 9  
 - MySQL 8.x  
 - Postman o cliente HTTP para pruebas  
-- (Opcional) Docker para despliegue  
 
 ---
 
@@ -147,7 +146,7 @@ Servidor disponible en `http://localhost:3000`.
 ### Ejecutar en desarrollo con recarga automática
 
 ```bash
-npm run dev
+nodemon .\dist\index.js
 ```
 
 ### Compilar TypeScript
