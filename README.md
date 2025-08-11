@@ -105,7 +105,7 @@ const database = {
 ### 5. Iniciar servidor
 
 ```bash
-npm run dev
+nodemon .\dist\index.js
 ```
 
 Servidor disponible en `http://localhost:3000`.
